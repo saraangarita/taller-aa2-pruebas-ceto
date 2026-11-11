@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"><title>Estudiantes inscritos</title></head>
+<body>
+  <h1>Estudiantes inscritos</h1>
+  <table id="tabla-estudiantes" border="1">
+    <thead><tr><th>Código</th><th>Nombre</th><th>Correo</th><th>Programa</th><th>Semestre</th></tr></thead>
+    <tbody>
+      {% for e in estudiantes %}
+      <tr class="fila-estudiante">
+        <td>EST-{{ '%04d' % e.id }}</td><td>{{ e.nombre }}</td><td>{{ e.correo }}</td>
+        <td>{{ e.programa }}</td><td>{{ e.semestre }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p id="total">Total: {{ estudiantes|length }}</p>
+  <a href="/inscripcion">Nueva inscripción</a>
+</body>
+</html>

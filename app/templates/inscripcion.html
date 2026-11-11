@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Inscripciones CETO</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 420px; margin: 40px auto; }
+    label, input, select, button { display: block; width: 100%; margin-bottom: 6px; }
+    .error { color: #b00020; font-size: .9em; margin-bottom: 10px; }
+    #mensaje-exito { color: #1b5e20; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>Inscripción de estudiantes</h1>
+
+  {% if exito %}<p id="mensaje-exito" role="status">{{ exito }}</p>{% endif %}
+
+  <form id="form-inscripcion" method="post" action="/inscripcion">
+    <label for="nombre">Nombre completo</label>
+    <input id="nombre" name="nombre" value="{{ datos.get('nombre', '') }}">
+    {% if errores.nombre %}<div class="error" id="error-nombre">{{ errores.nombre }}</div>{% endif %}
+
+    <label for="correo">Correo</label>
+    <input id="correo" name="correo" value="{{ datos.get('correo', '') }}">
+    {% if errores.correo %}<div class="error" id="error-correo">{{ errores.correo }}</div>{% endif %}
+    <label for="documento">Número de documento</label>
+    <input id="documento" name="documento" type="text" value="{{ datos.get('documento', '') }}">
+    {% if errores.documento %}<div class="error" id="error-documento">{{ errores.documento }}</div>{% endif %}
+
+    <label for="programa">Programa</label>
+    <select id="programa" name="programa">
+      <option value="">-- Seleccione --</option>
+      {% for p in programas %}
+      <option value="{{ p }}" {% if datos.get('programa') == p %}selected{% endif %}>{{ p }}</option>
+      {% endfor %}
+    </select>
+    {% if errores.programa %}<div class="error" id="error-programa">{{ errores.programa }}</div>{% endif %}
+
+    <label for="semestre">Semestre</label>
+    <input id="semestre" name="semestre" type="number" value="{{ datos.get('semestre', '') }}">
+    {% if errores.semestre %}<div class="error" id="error-semestre">{{ errores.semestre }}</div>{% endif %}
+
+    <button id="btn-inscribir" type="submit">Inscribir</button>
+  </form>
+  <p><a id="ver-listado" href="/estudiantes">Ver estudiantes inscritos</a></p>
+</body>
+</html>
