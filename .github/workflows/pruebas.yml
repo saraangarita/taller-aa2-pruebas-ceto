@@ -1,0 +1,36 @@
+name: Pruebas automatizadas - Inscripciones
+
+on: [push, pull_request]
+
+jobs:
+  pruebas:
+    runs-on: ubuntu-latest
+    env:
+      HEADLESS: "1"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Instalar dependencias
+        run: |
+          python -m pip install -r requirements.txt
+          mkdir -p reportes evidencias
+
+      - name: Pruebas de API
+        run: python -m pytest -m api -v
+
+      - name: Pruebas de interfaz y flujos E2E
+        run: python -m pytest -m ui -v --html=reportes/reporte.html --self-contained-html
+
+      - name: Publicar reportes y evidencias
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reportes-y-evidencias
+          path: |
+            reportes/
+            evidencias/
